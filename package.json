@@ -1,0 +1,37 @@
+{
+  "name": "reactadmin",
+  "version": "1.0.0",
+  "description": "",
+  "main": "3.1 gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "browserslist": [
+    "last 2 chrome versions",
+    "last 2 firefox versions",
+    "last 2 ios versions"
+  ],
+  "dependencies": {
+    "axios": "^0.21.1",
+    "bootstrap": "^5.1.0",
+    "core-js": "^3.16.0",
+    "gulp-sass": "^5.0.0",
+    "jquery": "^3.6.0",
+    "node-sass": "^6.0.1",
+    "uikit": "^3.7.1",
+    "webpack": "^5.48.0",
+    "webpack-cli": "^4.7.2",
+    "webpack-stream": "^6.1.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@babel/preset-env": "^7.14.9",
+    "@babel/preset-react": "^7.14.5",
+    "babel-loader": "^8.2.2",
+    "gulp": "^4.0.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
+}
