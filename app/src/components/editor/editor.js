@@ -10,6 +10,7 @@ import ChooseModal from '../choose-modal/choose-modal.js'
 import UIkit from 'uikit'
 import EditorMeta from '../editor-meta/editor-meta.js'
 import EditorImages from '../editor-images/editor-images'
+import Login from '../login/login'
 
 export default class Editor extends Component {
 	constructor() {
@@ -20,22 +21,51 @@ export default class Editor extends Component {
 			newPageName: '',
 			loading: true,
 			backupsList: [],
+			auth: false,
 		}
 		this.isLoading = this.isLoading.bind(this)
 		this.isLoaded = this.isLoaded.bind(this)
 		this.save = this.save.bind(this)
 		this.restoreBackup = this.restoreBackup.bind(this)
+		this.login = this.login.bind(this)
 	}
 
 	componentDidMount() {
-		this.init(this.currentPage)
+		this.checkAuth()
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (this.state.auth !== prevState.auth) {
+			this.init(this.currentPage)
+		}
+	}
+
+	checkAuth() {
+		axios.get('./api/checkAuth.php').then(res => {
+			this.setState({
+				auth: res.data.auth,
+			})
+		})
+	}
+
+	login(pass) {
+		if (pass.length > 5) {
+			// console.log(pass)
+			axios.post('./api/login.php', { password: pass }).then(res => {
+				this.setState({
+					auth: res.data.auth,
+				})
+			})
+		}
 	}
 
 	init(page) {
-		this.iframe = document.querySelector('iframe')
-		this.open(page, this.isLoaded)
-		this.loadPageList()
-		this.loadBackupsList()
+		if (this.state.auth) {
+			this.iframe = document.querySelector('iframe')
+			this.open(page, this.isLoaded)
+			this.loadPageList()
+			this.loadBackupsList()
+		}
 	}
 
 	open(page, cb) {
@@ -174,11 +204,16 @@ export default class Editor extends Component {
 	}
 
 	render() {
-		const { loading, backupsList } = this.state
+		const { loading, backupsList, auth } = this.state
 		const modal = true
 		let spinner
 
 		loading ? (spinner = <Spinner active />) : (spinner = <Spinner />)
+
+		if (!auth) {
+			return <Login login={this.login} />
+		}
+
 		return (
 			<>
 				<iframe src={this.currentPage} frameBorder='0'></iframe>
