@@ -1,6 +1,7 @@
 import React from 'react'
 
-const ConfirmModal = ({ target, method }) => {
+const ConfirmModal = ({ target, method, text }) => {
+	const { title, body, btn1, btn2 } = text
 	return (
 		<div
 			className='modal fade'
@@ -13,7 +14,7 @@ const ConfirmModal = ({ target, method }) => {
 				<div className='modal-content'>
 					<div className='modal-header'>
 						<h5 className='modal-title' id='exampleModalLabel'>
-							Save changes
+							{title}
 						</h5>
 						<button
 							type='button'
@@ -22,14 +23,14 @@ const ConfirmModal = ({ target, method }) => {
 							aria-label='Закрыть'
 						></button>
 					</div>
-					<div className='modal-body'>Are you sure?</div>
+					<div className='modal-body'>{body}</div>
 					<div className='modal-footer'>
 						<button
 							type='button'
 							className='btn btn-secondary'
 							data-bs-dismiss='modal'
 						>
-							close
+							{btn1}
 						</button>
 						<button
 							type='button'
@@ -37,7 +38,7 @@ const ConfirmModal = ({ target, method }) => {
 							data-bs-dismiss='modal'
 							onClick={() => method()}
 						>
-							Save
+							{btn2}
 						</button>
 					</div>
 				</div>

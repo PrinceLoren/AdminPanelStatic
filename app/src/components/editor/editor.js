@@ -22,12 +22,15 @@ export default class Editor extends Component {
 			loading: true,
 			backupsList: [],
 			auth: false,
+			loginError: false,
+			loginLengthError: false,
 		}
 		this.isLoading = this.isLoading.bind(this)
 		this.isLoaded = this.isLoaded.bind(this)
 		this.save = this.save.bind(this)
 		this.restoreBackup = this.restoreBackup.bind(this)
 		this.login = this.login.bind(this)
+		this.logout = this.logout.bind(this)
 	}
 
 	componentDidMount() {
@@ -50,13 +53,25 @@ export default class Editor extends Component {
 
 	login(pass) {
 		if (pass.length > 5) {
-			// console.log(pass)
 			axios.post('./api/login.php', { password: pass }).then(res => {
 				this.setState({
 					auth: res.data.auth,
+					loginError: !res.data.auth,
+					loginLengthError: false,
 				})
 			})
+		} else {
+			this.setState({
+				loginError: false,
+				loginLengthError: true,
+			})
 		}
+	}
+
+	logout() {
+		axios.get('./api/logout.php').then(() => {
+			window.location.replace('/')
+		})
 	}
 
 	init(page) {
@@ -204,14 +219,21 @@ export default class Editor extends Component {
 	}
 
 	render() {
-		const { loading, backupsList, auth } = this.state
-		const modal = true
+		const { loading, backupsList, auth, loginError, loginLengthError } =
+			this.state
+
 		let spinner
 
 		loading ? (spinner = <Spinner active />) : (spinner = <Spinner />)
 
 		if (!auth) {
-			return <Login login={this.login} />
+			return (
+				<Login
+					login={this.login}
+					lengthErr={loginLengthError}
+					logErr={loginError}
+				/>
+			)
 		}
 
 		return (
@@ -232,7 +254,28 @@ export default class Editor extends Component {
 					data={backupsList}
 					redirect={this.restoreBackup}
 				/>
-				<ConfirmModal target={'exampleModal'} method={this.save} />
+				<ConfirmModal
+					target={'exampleModal'}
+					method={this.save}
+					text={{
+						title: 'Save changes',
+						body: 'Are you sure?',
+						btn1: 'Close',
+						btn2: 'Save',
+					}}
+				/>
+
+				<ConfirmModal
+					target={'exampleModal4'}
+					method={this.logout}
+					text={{
+						title: 'Exit',
+						body: 'Are you sure?',
+						btn1: 'Close',
+						btn2: 'Exit',
+					}}
+				/>
+
 				{this.virtualDom ? (
 					<EditorMeta target={'exampleModal3'} virtualDom={this.virtualDom} />
 				) : (

@@ -15,7 +15,21 @@ export default class Login extends Component {
 
 	render() {
 		const { pass } = this.state
-		const { login } = this.props
+		const { login, lengthErr, logErr } = this.props
+		let renderLogErr, renderLengthErr
+
+		logErr
+			? (renderLogErr = <span className='login-error'>Incorrect password</span>)
+			: null
+
+		lengthErr
+			? (renderLengthErr = (
+					<span className='login-error'>
+						Password must be at least 5 symbol
+					</span>
+			  ))
+			: null
+
 		return (
 			<div className='login-container'>
 				<div className='login'>
@@ -32,6 +46,8 @@ export default class Login extends Component {
 						value={pass}
 						onChange={e => this.onPasswordChange(e)}
 					/>
+					{renderLogErr}
+					{renderLengthErr}
 					<div id='passwordHelpBlock' className='form-text'>
 						Enter the administrator password
 					</div>

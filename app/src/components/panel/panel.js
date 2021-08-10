@@ -28,6 +28,15 @@ const Panel = () => {
 			>
 				backup
 			</button>
+
+			<button
+				type='button'
+				className='btn btn-danger me-md-2'
+				data-bs-toggle='modal'
+				data-bs-target='#exampleModal4'
+			>
+				Exit
+			</button>
 		</div>
 	)
 }

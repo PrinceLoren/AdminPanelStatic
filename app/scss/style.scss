@@ -78,13 +78,19 @@ iframe {
 
 	.login {
 		width: 600px;
-		height: 300px;
+
 		padding: 30px;
 		background-color: #fff;
 		border-radius: 4px;
 	}
 
 	.marb {
-		margin-top: 60px;
+		margin-top: 40px;
+	}
+
+	.login-error {
+		display: block;
+		color: red;
+		margin-top: 10px;
 	}
 }
